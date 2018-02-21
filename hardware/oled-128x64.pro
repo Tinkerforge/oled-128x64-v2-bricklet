@@ -1,4 +1,4 @@
-update=Mo 19 Feb 2018 19:14:07 CET
+update=Mi 21 Feb 2018 09:32:39 CET
 version=1
 last_client=kicad
 [cvpcb]
@@ -47,16 +47,6 @@ LibName10=led
 LibName11=dip_sockets
 LibName12=standard
 LibName13=Logo
-[schematic_editor]
-version=1
-PageLayoutDescrFile=
-PlotDirectoryName=
-SubpartIdSeparator=0
-SubpartFirstId=65
-NetFmtName=
-SpiceForceRefPrefix=0
-SpiceUseNetNumbers=0
-LabSize=60
 [eeschema]
 version=1
 LibDir=kicad-libraries
@@ -91,3 +81,13 @@ LibName27=opto
 LibName28=atmel
 LibName29=contrib
 LibName30=valves
+[schematic_editor]
+version=1
+PageLayoutDescrFile=
+PlotDirectoryName=
+SubpartIdSeparator=0
+SubpartFirstId=65
+NetFmtName=Pcbnew
+SpiceForceRefPrefix=0
+SpiceUseNetNumbers=0
+LabSize=60
