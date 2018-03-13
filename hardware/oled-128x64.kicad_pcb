@@ -3,7 +3,7 @@
   (general
     (links 78)
     (no_connects 0)
-    (area 133.244999 120.744999 174.955001 162.455001)
+    (area 133.909499 121.409499 174.290501 161.790501)
     (thickness 1.6)
     (drawings 24)
     (tracks 303)
@@ -6072,11 +6072,11 @@
   )
 
   (module kicad-libraries:CE_5mm (layer F.Cu) (tedit 5922FFD4) (tstamp 5584E212)
-    (at 168.48 150.42 90)
-    (fp_text reference VAL (at 0 0 90) (layer F.SilkS) hide
+    (at 168.5 150.4)
+    (fp_text reference VAL (at 0 0) (layer F.SilkS) hide
       (effects (font (size 0.2 0.2) (thickness 0.05)))
     )
-    (fp_text value CE_5mm (at 0 0 90) (layer F.SilkS) hide
+    (fp_text value CE_5mm (at 0 0) (layer F.SilkS) hide
       (effects (font (size 0.2 0.2) (thickness 0.05)))
     )
     (fp_poly (pts (xy -0.55372 1.67132) (xy -0.5715 1.67386) (xy -0.57912 1.6764) (xy -0.59436 1.6764)
@@ -6166,11 +6166,11 @@
   )
 
   (module kicad-libraries:WEEE_7mm (layer F.Cu) (tedit 5922FFAE) (tstamp 5584ADC4)
-    (at 168.48 141.63 90)
-    (fp_text reference G*** (at 0 0 90) (layer F.SilkS) hide
+    (at 168.5 141.6)
+    (fp_text reference G*** (at 0 0) (layer F.SilkS) hide
       (effects (font (size 0.2 0.2) (thickness 0.05)))
     )
-    (fp_text value LOGO (at 0.75 0 90) (layer F.SilkS) hide
+    (fp_text value LOGO (at 0.75 0) (layer F.SilkS) hide
       (effects (font (size 0.2 0.2) (thickness 0.05)))
     )
     (fp_poly (pts (xy 2.032 3.527778) (xy -0.014111 3.527778) (xy -2.060222 3.527778) (xy -2.060222 3.019778)
@@ -6718,11 +6718,11 @@
   )
 
   (module kicad-libraries:Logo_CoMCU (layer F.Cu) (tedit 0) (tstamp 5A8D433C)
-    (at 168.48 132.63 90)
-    (fp_text reference G*** (at 0 0 90) (layer F.SilkS) hide
+    (at 168.5 132.6)
+    (fp_text reference G*** (at 0 0) (layer F.SilkS) hide
       (effects (font (thickness 0.3)))
     )
-    (fp_text value LOGO (at 0.75 0 90) (layer F.SilkS) hide
+    (fp_text value LOGO (at 0.75 0) (layer F.SilkS) hide
       (effects (font (thickness 0.3)))
     )
     (fp_poly (pts (xy -1.083326 1.807455) (xy -1.021749 1.855631) (xy -0.996708 1.88908) (xy -0.98448 1.910311)
