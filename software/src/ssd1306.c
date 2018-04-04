@@ -198,7 +198,6 @@ void ssd1306_init_spi(void) {
 	// Initialize USIC channel in SPI master mode
 	XMC_SPI_CH_Init(SSD1306_USIC, &channel_config);
 	SSD1306_USIC->SCTR &= ~USIC_CH_SCTR_PDL_Msk; // Set passive data level to 0
-//	SSD1306_USIC->PCR_SSCMode &= ~USIC_CH_PCR_SSCMode_TIWEN_Msk; // Disable time between bytes
 
 	XMC_SPI_CH_SetSlaveSelectPolarity(SSD1306_USIC, XMC_SPI_CH_SLAVE_SEL_INV_TO_MSLS);
 	XMC_SPI_CH_SetBitOrderMsbFirst(SSD1306_USIC);
@@ -212,9 +211,7 @@ void ssd1306_init_spi(void) {
 	XMC_SPI_CH_ConfigureShiftClockOutput(SSD1306_USIC,
 									     XMC_SPI_CH_BRG_SHIFT_CLOCK_PASSIVE_LEVEL_1_DELAY_DISABLED,
 									     XMC_SPI_CH_BRG_SHIFT_CLOCK_OUTPUT_SCLK);
-/*	XMC_SPI_CH_ConfigureShiftClockOutput(SSD1306_USIC,
-										 XMC_SPI_CH_BRG_SHIFT_CLOCK_PASSIVE_LEVEL_0_DELAY_ENABLED,
-										 XMC_SPI_CH_BRG_SHIFT_CLOCK_OUTPUT_SCLK);*/
+
 	// Configure Leading/Trailing delay
 	XMC_SPI_CH_SetSlaveSelectDelay(SSD1306_USIC, 2);
 
