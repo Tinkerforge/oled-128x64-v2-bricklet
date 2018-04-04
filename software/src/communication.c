@@ -162,10 +162,6 @@ BootloaderHandleMessageResponse clear_display(const ClearDisplay *data) {
 }
 
 BootloaderHandleMessageResponse set_display_configuration(const SetDisplayConfiguration *data) {
-	if(data->contrast > 63) {
-		return HANDLE_MESSAGE_RESPONSE_INVALID_PARAMETER;
-	}
-
 	if(ssd1306.display_configuration_contrast != data->contrast) {
 		ssd1306.new_contrast  = true;
 		ssd1306.display_configuration_contrast = data->contrast;

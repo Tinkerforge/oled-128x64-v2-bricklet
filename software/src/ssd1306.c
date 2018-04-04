@@ -270,14 +270,14 @@ void ssd1306_task_tick(void) {
 		if(ssd1306.new_invert) {
 			ssd1306.new_invert = false;
 
-			uint8_t invert_data = ssd1306.display_configuration_invert ? 0xA7 : 0xA6;
+			uint8_t invert_data = ssd1306.display_configuration_invert ? SSD1306_INVERTDISPLAY : SSD1306_NORMALDISPLAY;
 			ssd1306_task_write_command(&invert_data, 1);
 		}
 
 		if(ssd1306.new_contrast) {
 			ssd1306.new_contrast = false;
 
-			uint8_t contrast_data[2] = {0x81, ssd1306.display_configuration_contrast};
+			uint8_t contrast_data[2] = {SSD1306_SETCONTRAST, ssd1306.display_configuration_contrast};
 			ssd1306_task_write_command(contrast_data, 2);
 		}
 
@@ -331,7 +331,7 @@ void ssd1306_init(void) {
 
     memset(ssd1306.display, 0x00, OLED_MAX_ROWS*OLED_MAX_COLUMNS);
     memset(ssd1306.display_mask, 0xff, OLED_MAX_ROWS*OLED_MAX_COLUMNS);
-    ssd1306.display_configuration_contrast  = 21;
+    ssd1306.display_configuration_contrast  = 143;
 	ssd1306.display_configuration_invert    = false;
 	ssd1306.automatic_draw                  = true;
 
