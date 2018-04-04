@@ -157,11 +157,6 @@ void ssd1306_task_write_command(const uint8_t *command, const uint32_t length) {
 
 // row 0-7 (8 pixel each), column 0-127
 void ssd1306_task_set_cursor(uint8_t row, uint8_t column) {
-    const uint8_t column_address[3] = {SSD1306_COLUMNADDR, PIXEL_COL_START+column, PIXEL_COL_START+127};
-	const uint8_t row_address[3] = {SSD1306_PAGEADDR, row, row};
-	ssd1306_task_write_command(column_address, 3);
-	ssd1306_task_write_command(row_address, 3);
-    /*
 	column += 4;
 
 	uint8_t set_cursor_command[3] = {
@@ -170,7 +165,7 @@ void ssd1306_task_set_cursor(uint8_t row, uint8_t column) {
 		(column & 0x0F)
 	};
 
-	ssd1306_task_write_command(set_cursor_command, 3);*/
+	ssd1306_task_write_command(set_cursor_command, 3);
 }
 
 void ssd1306_init_spi(void) {
