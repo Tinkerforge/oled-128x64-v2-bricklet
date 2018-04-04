@@ -28,15 +28,18 @@
 #include "bricklib2/hal/system_timer/system_timer.h"
 #include "bricklib2/logging/logging.h"
 #include "communication.h"
+#include "ssd1306.h"
 
 int main(void) {
 	logging_init();
 	logd("Start OLED 128x64 V2 Bricklet\n\r");
 
 	communication_init();
+	ssd1306_init();
 
 	while(true) {
 		bootloader_tick();
 		communication_tick();
+		ssd1306_tick();
 	}
 }
