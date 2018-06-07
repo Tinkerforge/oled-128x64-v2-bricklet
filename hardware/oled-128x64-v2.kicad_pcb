@@ -5,7 +5,7 @@
     (no_connects 0)
     (area 133.244999 120.744999 174.955001 162.455001)
     (thickness 1.6)
-    (drawings 24)
+    (drawings 25)
     (tracks 303)
     (zones 0)
     (modules 34)
@@ -6928,6 +6928,9 @@
       (xy 1.301301 -2.715081) (xy 1.302426 -2.714986)) (layer F.SilkS) (width 0.01))
   )
 
+  (gr_text "Copyright Tinkerforge GmbH 2018.\nThis documentation describes Open Hardware and is licensed under the\nCERN OHL v. 1.1.\nYou may redistribute and modify this documentation under the terms of the\nCERN OHL v.1.1. (http://ohwr.org/cernohl). This documentation is distributed\nWITHOUT ANY EXPRESS OR IMPLIED WARRANTY, INCLUDING OF\nMERCHANTABILITY, SATISFACTORY QUALITY AND FITNESS FOR A\nPARTICULAR PURPOSE. Please see the CERN OHL v.1.1 for applicable\nconditions\n" (at 233.7 144.2) (layer Cmts.User)
+    (effects (font (size 1.5 1.5) (thickness 0.3048)))
+  )
   (gr_text Status (at 163.28 122.65) (layer F.SilkS)
     (effects (font (size 0.8 0.8) (thickness 0.15)))
   )
