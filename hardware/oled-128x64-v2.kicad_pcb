@@ -3,7 +3,7 @@
   (general
     (links 78)
     (no_connects 0)
-    (area 133.244999 120.744999 278.74526 162.455001)
+    (area 133.909499 121.409499 174.290501 161.790501)
     (thickness 1.6)
     (drawings 25)
     (tracks 303)
@@ -6218,6 +6218,11 @@
       (at (xyz 0 0.17 -0.08))
       (scale (xyz 1 1 1))
       (rotate (xyz 180 0 180))
+    )
+    (model Connectors/CONN_OLED_128x64.wrl
+      (at (xyz 0 -0.12 0))
+      (scale (xyz 1 1 1))
+      (rotate (xyz 0 0 180))
     )
   )
 
