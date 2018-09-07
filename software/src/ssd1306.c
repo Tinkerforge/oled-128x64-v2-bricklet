@@ -157,8 +157,6 @@ void ssd1306_task_write_command(const uint8_t *command, const uint32_t length) {
 
 // row 0-7 (8 pixel each), column 0-127
 void ssd1306_task_set_cursor(uint8_t row, uint8_t column) {
-	column += 4;
-
 	uint8_t set_cursor_command[3] = {
 		0xB0 + row,
 		0x10 + ((column & 0xF0) >> 4),
