@@ -1,0 +1,35 @@
+Notebook[{
+ Cell[
+  BoxData[{
+   RowBox[{"Needs", "[", "\"\<NETLink`\>\"", "]"}],
+   RowBox[{"LoadNETAssembly", "[", RowBox[{"\"\<Tinkerforge\>\"", ",", RowBox[{RowBox[{"NotebookDirectory", "[", "]"}], "<>", "\"\<../../..\>\""}]}], "]"}]
+  }], "Input"
+ ],
+ Cell[
+  BoxData[{
+   RowBox[{"host", "=", "\"\<localhost\>\""}],
+   RowBox[{"port", "=", "4223"}],
+   RowBox[{"uid", "=", "\"\<XYZ\>\"", RowBox[{"(*", "Change XYZ to the UID of your OLED 128x64 Bricklet 2.0", "*)"}]}],
+   RowBox[{"
+"}],
+   RowBox[{"(*", "Create IPConnection and device object", "*)"}],
+   RowBox[{"ipcon", "=", RowBox[{"NETNew", "[", "\"\<Tinkerforge.IPConnection\>\"", "]"}]}],
+   RowBox[{"oled", "=", RowBox[{"NETNew", "[", RowBox[{"\"\<Tinkerforge.BrickletOLED128x64V2\>\"", ",", "uid", ",", "ipcon"}], "]"}]}],
+   RowBox[{"ipcon", "@", RowBox[{"Connect", "[", RowBox[{"host", ",", "port"}], "]"}]}],
+   RowBox[{"
+"}],
+   RowBox[{"(*", "Clear display", "*)"}],
+   RowBox[{"oled", "@", RowBox[{"ClearDisplay", "[", "]"}]}],
+   RowBox[{"
+"}],
+   RowBox[{"(*", "Write ", "\"\<Hello World\>\"", " starting from upper left corner of the screen", "*)"}],
+   RowBox[{"oled", "@", RowBox[{"WriteLine", "[", RowBox[{"0", ",", "0", ",", "\"\<Hello World\>\""}], "]"}]}],
+   RowBox[{"
+"}],
+   RowBox[{"(*", "Clean up", "*)"}],
+   RowBox[{"ipcon", "@", RowBox[{"Disconnect", "[", "]"}]}],
+   RowBox[{"ReleaseNETObject", "[", "oled", "]"}],
+   RowBox[{"ReleaseNETObject", "[", "ipcon", "]"}]
+  }], "Input"
+ ]
+}]

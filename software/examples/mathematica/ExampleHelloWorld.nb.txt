@@ -1,0 +1,22 @@
+Needs["NETLink`"]
+LoadNETAssembly["Tinkerforge",NotebookDirectory[]<>"../../.."]
+
+host="localhost"
+port=4223
+uid="XYZ"(*Change XYZ to the UID of your OLED 128x64 Bricklet 2.0*)
+
+(*Create IPConnection and device object*)
+ipcon=NETNew["Tinkerforge.IPConnection"]
+oled=NETNew["Tinkerforge.BrickletOLED128x64V2",uid,ipcon]
+ipcon@Connect[host,port]
+
+(*Clear display*)
+oled@ClearDisplay[]
+
+(*Write "Hello World" starting from upper left corner of the screen*)
+oled@WriteLine[0,0,"Hello World"]
+
+(*Clean up*)
+ipcon@Disconnect[]
+ReleaseNETObject[oled]
+ReleaseNETObject[ipcon]
