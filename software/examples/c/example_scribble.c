@@ -1,3 +1,6 @@
+// Tested with gcc:
+// > gcc -pthread example_scribble.c ip_connection.c bricklet_oled_128x64_v2.c -lgd -lm -o example
+
 #include <stdio.h>
 #include <math.h>
 #include <gd.h> // https://libgd.github.io/
