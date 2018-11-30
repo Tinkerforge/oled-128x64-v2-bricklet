@@ -59,7 +59,7 @@ extern SSD1306 ssd1306;
 
 void ssd1306_init(void);
 void ssd1306_tick(void);
-
+void ssd1306_trigger_draw(void);
 
 #define PIXEL_W 128
 #define PIXEL_H 64

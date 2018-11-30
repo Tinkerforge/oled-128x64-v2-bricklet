@@ -41,7 +41,6 @@ BootloaderHandleMessageResponse handle_message(const void *message, void *respon
 	}
 }
 
-
 BootloaderHandleMessageResponse write_pixels_low_level(const WritePixelsLowLevel *data) {
 	if((data->x_start > data->x_end) || (data->y_start > data->y_end)) {
 		return HANDLE_MESSAGE_RESPONSE_INVALID_PARAMETER;
@@ -90,7 +89,7 @@ BootloaderHandleMessageResponse write_pixels_low_level(const WritePixelsLowLevel
 
 	if(data->pixels_chunk_offset + length >= data->pixels_length) {
 		if(ssd1306.automatic_draw) {
-			ssd1306.display_mask_changed = true;
+			ssd1306_trigger_draw();
 		}
 	}
 
@@ -156,7 +155,7 @@ BootloaderHandleMessageResponse clear_display(const ClearDisplay *data) {
 		}
 	}
 
-	ssd1306.display_mask_changed = true;
+	ssd1306_trigger_draw();
 
 	return HANDLE_MESSAGE_RESPONSE_EMPTY;
 }
@@ -194,7 +193,7 @@ BootloaderHandleMessageResponse write_line(const WriteLine *data) {
 	for(uint8_t i = 0; i < 21 - data->position; i++) {
 		if(data->text[i] == 0) {
 			if(ssd1306.automatic_draw) {
-				ssd1306.display_mask_changed = true;
+				ssd1306_trigger_draw();
 			}
 			return HANDLE_MESSAGE_RESPONSE_EMPTY;
 		}
@@ -204,7 +203,7 @@ BootloaderHandleMessageResponse write_line(const WriteLine *data) {
 			uint8_t column = (data->position+i)*6 + j;
 			if(column >= OLED_MAX_COLUMNS) {
 				if(ssd1306.automatic_draw) {
-					ssd1306.display_mask_changed = true;
+					ssd1306_trigger_draw();
 				}
 				return HANDLE_MESSAGE_RESPONSE_EMPTY;
 			}
@@ -217,7 +216,7 @@ BootloaderHandleMessageResponse write_line(const WriteLine *data) {
 	}
 
 	if(ssd1306.automatic_draw) {
-		ssd1306.display_mask_changed = true;
+		ssd1306_trigger_draw();
 	}
 
 	return HANDLE_MESSAGE_RESPONSE_EMPTY;
@@ -228,7 +227,7 @@ BootloaderHandleMessageResponse draw_buffered_frame(const DrawBufferedFrame *dat
 		memset(ssd1306.display_mask, 0xFF, OLED_MAX_COLUMNS*OLED_MAX_ROWS);
 	}
 
-	ssd1306.display_mask_changed = true;
+	ssd1306_trigger_draw();
 
 	return HANDLE_MESSAGE_RESPONSE_EMPTY;
 }

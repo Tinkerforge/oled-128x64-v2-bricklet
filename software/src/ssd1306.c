@@ -108,41 +108,37 @@ void ssd1306_spi_task_transceive(const uint8_t *data, const uint32_t length, XMC
 	spi_data_write = ssd1306.spi_data;
 	spi_data_write_end = ssd1306.spi_data + length;
 
+	// Fill FIFO with as much data as possible
 	XMC_SPI_CH_ClearStatusFlag(SSD1306_USIC, XMC_SPI_CH_STATUS_FLAG_MSLS);
+	XMC_USIC_CH_TXFIFO_DisableEvent(SSD1306_USIC, XMC_USIC_CH_TXFIFO_EVENT_CONF_STANDARD);
+	while((!XMC_USIC_CH_TXFIFO_IsFull(SSD1306_USIC)) && (spi_data_write < spi_data_write_end)) {
+		SSD1306_USIC->IN[0] = *spi_data_write;
+		spi_data_write++;
+	}
+	NVIC_ClearPendingIRQ(SSD1306_IRQ_TX);
+
+	if(spi_data_write < spi_data_write_end) {
+		// If we dont yet have everything written, enable fifo
+		XMC_USIC_CH_TXFIFO_EnableEvent(SSD1306_USIC, XMC_USIC_CH_TXFIFO_EVENT_CONF_STANDARD);
+	}
+
+	// Enable slave select, FIFO transfer will start here
 	XMC_SPI_CH_EnableSlaveSelect(SSD1306_USIC, slave);
 
-	// If possible write and read data in this coop task.
-	// Only if other tasks take too much time we go through the interrupts.
-	// This may seem a bit redundant, but in profiling tests we found that this approach
-	// is by far the most efficient.
-	// Even if we transfer at a full 1.5MHz rate, the interrupt will only be called about once
-	// per ms. The rest of the data is transferred through this loop, which will be called
-	// by the scheduler anyway.
-	while((spi_data_write < spi_data_write_end) && (!XMC_USIC_CH_TXFIFO_IsFull(SSD1306_USIC))) {
-		// Disable TX IRQ to avoid race condition and write as much data by
-		// hand as possible.
-		XMC_USIC_CH_TXFIFO_DisableEvent(SSD1306_USIC, XMC_USIC_CH_TXFIFO_EVENT_CONF_STANDARD);
-		while((!XMC_USIC_CH_TXFIFO_IsFull(SSD1306_USIC)) && (spi_data_write < spi_data_write_end)) {
-			SSD1306_USIC->IN[0] = *spi_data_write;
-			spi_data_write++;
-		}
-		NVIC_ClearPendingIRQ(SSD1306_IRQ_TX);
-		if(spi_data_write < spi_data_write_end) {
-			// If we have not yet written everything here, we turn the interrupt on.
-			// If the bootloader or other tasks now takes too long the rest of the data can
-			// be send through the interrupt.
-			// Otherwise the we will run the code above again and send data in this loop.
-			XMC_USIC_CH_TXFIFO_EnableEvent(SSD1306_USIC, XMC_USIC_CH_TXFIFO_EVENT_CONF_STANDARD);
-		} else {
-            while(!XMC_USIC_CH_TXFIFO_IsEmpty(SSD1306_USIC)) {
-		        coop_task_yield();
-            }
-        }
-
+	// Wait for data to be written through TX IRQ
+	while((spi_data_write < spi_data_write_end) || !XMC_USIC_CH_TXFIFO_IsEmpty(SSD1306_USIC)) {
 		coop_task_yield();
 	}
 
-	XMC_SPI_CH_DisableSlaveSelect(SSD1306_USIC);
+	// The FIFO will automatically disable slave select when all data is written
+	// We wait until slave select is low here. Otherwise there may still be up to
+	// 7 bits send and we have a race condition 
+	// (C/D pin can changed before the bits are out).
+	while(!XMC_GPIO_GetInput(SSD1306_SELECT_PIN)) {
+		// We test for this be reading the actualy slave select pin,
+		// there does not seem to be any reliable status flag for this?
+		coop_task_yield();
+	}
 }
 
 void ssd1306_task_write_data(const uint8_t *data, const uint32_t length) {
@@ -213,6 +209,9 @@ void ssd1306_init_spi(void) {
 	// Configure Leading/Trailing delay
 	XMC_SPI_CH_SetSlaveSelectDelay(SSD1306_USIC, 2);
 
+	// Disable FEM, such that FIFO will automatically disable slave select
+	XMC_SPI_CH_DisableFEM(SSD1306_USIC);
+
 	// SPI Mode: CPOL=1 and CPHA=1
 	SSD1306_USIC_CHANNEL->DX1CR |= USIC_CH_DX1CR_DPOL_Msk;
 
@@ -237,6 +236,19 @@ void ssd1306_init_spi(void) {
 
 	// Configure MOSI pin
 	XMC_GPIO_Init(SSD1306_MOSI_PIN, &mosi_pin_config);
+}
+
+void ssd1306_trigger_draw(void) {
+	// Write display and mask to double buffer
+	// This way the user can already change the display again while we are still writing to it
+	memcpy(ssd1306.display_write, ssd1306.display, OLED_MAX_ROWS*OLED_MAX_COLUMNS);
+	for(uint8_t row = 0; row < OLED_MAX_ROWS; row++) {
+		for(uint8_t column = 0; column < OLED_MAX_COLUMNS; column++) {
+			ssd1306.display_mask_write[row][column] |= ssd1306.display_mask[row][column];
+		}
+	}
+	memset(ssd1306.display_mask, 0, OLED_MAX_ROWS*OLED_MAX_COLUMNS);
+	ssd1306.display_mask_changed = true;
 }
 
 void ssd1306_task_tick(void) {
@@ -277,11 +289,6 @@ void ssd1306_task_tick(void) {
 		}
 
 		if(ssd1306.display_mask_changed) {
-			// Write display and mask to double buffer
-			// This way the user can already change the display again while we are still writing to it
-			memcpy(ssd1306.display_write, ssd1306.display, OLED_MAX_ROWS*OLED_MAX_COLUMNS);
-			memcpy(ssd1306.display_mask_write, ssd1306.display_mask, OLED_MAX_ROWS*OLED_MAX_COLUMNS);
-			memset(ssd1306.display_mask, 0, OLED_MAX_ROWS*OLED_MAX_COLUMNS);
 			ssd1306.display_mask_changed = false;
 
 			for(uint8_t row = 0; row < OLED_MAX_ROWS; row++) {
@@ -303,6 +310,8 @@ void ssd1306_task_tick(void) {
 					ssd1306_task_write_data(&ssd1306.display_write[row][column_start], column_end - column_start + 1);
 				}
 			}
+
+			memset(ssd1306.display_mask_write, 0, OLED_MAX_ROWS*OLED_MAX_COLUMNS);
 		}
 
         coop_task_yield();
