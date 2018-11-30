@@ -1,2 +1,5 @@
 2018-10-04: 2.0.0 (ac6f736)
 - Initial version
+
+2018-11-30: 2.0.1 (83d0666)
+- Fix drawing race-condition (that could result in corrupted display drawing)
