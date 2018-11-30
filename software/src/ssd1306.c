@@ -334,7 +334,11 @@ void ssd1306_init(void) {
     ssd1306.display_mask_changed = true;
 
     memset(ssd1306.display, 0x00, OLED_MAX_ROWS*OLED_MAX_COLUMNS);
-    memset(ssd1306.display_mask, 0xff, OLED_MAX_ROWS*OLED_MAX_COLUMNS);
+    memset(ssd1306.display_mask, 0x00, OLED_MAX_ROWS*OLED_MAX_COLUMNS);
+
+    memset(ssd1306.display_write, 0x00, OLED_MAX_ROWS*OLED_MAX_COLUMNS);
+    memset(ssd1306.display_mask_write, 0xFF, OLED_MAX_ROWS*OLED_MAX_COLUMNS);
+
     ssd1306.display_configuration_contrast  = 143;
 	ssd1306.display_configuration_invert    = false;
 	ssd1306.automatic_draw                  = true;

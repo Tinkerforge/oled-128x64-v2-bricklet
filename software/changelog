@@ -3,3 +3,6 @@
 
 2018-11-30: 2.0.1 (83d0666)
 - Fix drawing race-condition (that could result in corrupted display drawing)
+
+2018-11-30: 2.0.2 (TBD)
+- Make sure display is initialized as blank screen
