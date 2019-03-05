@@ -239,6 +239,10 @@ void ssd1306_init_spi(void) {
 }
 
 void ssd1306_trigger_draw(void) {
+	if(ssd1306.drawing) {
+		ssd1306.trigger_draw_after_draw = true;
+		return;
+	}
 	// Write display and mask to double buffer
 	// This way the user can already change the display again while we are still writing to it
 	memcpy(ssd1306.display_write, ssd1306.display, OLED_MAX_ROWS*OLED_MAX_COLUMNS);
@@ -249,6 +253,7 @@ void ssd1306_trigger_draw(void) {
 	}
 	memset(ssd1306.display_mask, 0, OLED_MAX_ROWS*OLED_MAX_COLUMNS);
 	ssd1306.display_mask_changed = true;
+	ssd1306.trigger_draw_after_draw = false;
 }
 
 void ssd1306_task_tick(void) {
@@ -290,6 +295,7 @@ void ssd1306_task_tick(void) {
 
 		if(ssd1306.display_mask_changed) {
 			ssd1306.display_mask_changed = false;
+			ssd1306.drawing = true;
 
 			for(uint8_t row = 0; row < OLED_MAX_ROWS; row++) {
 				bool start_found = false;
@@ -312,6 +318,11 @@ void ssd1306_task_tick(void) {
 			}
 
 			memset(ssd1306.display_mask_write, 0, OLED_MAX_ROWS*OLED_MAX_COLUMNS);
+
+			ssd1306.drawing = false;
+			if(ssd1306.trigger_draw_after_draw) {
+				ssd1306_trigger_draw();
+			}
 		}
 
         coop_task_yield();

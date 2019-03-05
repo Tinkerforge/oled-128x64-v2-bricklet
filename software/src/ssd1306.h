@@ -52,6 +52,9 @@ typedef struct {
 
 	bool automatic_draw;
 
+	bool trigger_draw_after_draw;
+	bool drawing;
+
 	uint16_t read_chunk_offset;
 } SSD1306;
 
