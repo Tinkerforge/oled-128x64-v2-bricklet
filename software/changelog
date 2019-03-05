@@ -7,5 +7,5 @@
 2018-11-30: 2.0.2 (4da66aa)
 - Make sure display is initialized as blank screen
 
-2019-03-05: 2.0.3 (TBD)
+2019-03-05: 2.0.3 (7bb89c6)
 - Fix drawing race condition in automatic-draw mode
