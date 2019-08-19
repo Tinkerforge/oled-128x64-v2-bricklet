@@ -12,3 +12,6 @@
 
 2019-05-29: 2.0.4 (6895395)
 - Fix SPITFP IRQ race condition with other higher prio IRQs (through bricklib2)
+
+2019-08-19: 2.0.5 (<unknown>)
+- Make clear-display obey the automatic-draw config

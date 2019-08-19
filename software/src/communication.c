@@ -155,7 +155,9 @@ BootloaderHandleMessageResponse clear_display(const ClearDisplay *data) {
 		}
 	}
 
-	ssd1306_trigger_draw();
+	if(ssd1306.automatic_draw) {
+		ssd1306_trigger_draw();
+	}
 
 	return HANDLE_MESSAGE_RESPONSE_EMPTY;
 }
