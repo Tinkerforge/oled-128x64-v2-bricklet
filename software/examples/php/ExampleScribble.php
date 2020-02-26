@@ -27,12 +27,12 @@ function drawImage($oled, $startColumn, $startRow, $columnCount, $rowCount, $ima
         for ($column = 0; $column < $columnCount; $column++)
         {
             $index = imagecolorat($image, $column, $row);
-			$color = imagecolorsforindex($image, $index);
-	        $pixels[$row*$columnCount + $column] = ($color['red'] + $color['green'] + $color['blue'] > 0);
+            $color = imagecolorsforindex($image, $index);
+            $pixels[$row*$columnCount + $column] = ($color['red'] + $color['green'] + $color['blue'] > 0);
         }
     }
         
-	$oled->writePixels(0, 0, WIDTH-1, HEIGHT-1, $pixels);
+    $oled->writePixels(0, 0, WIDTH-1, HEIGHT-1, $pixels);
 }
 
 $ipcon = new IPConnection(); // Create IP connection
