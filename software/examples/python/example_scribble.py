@@ -3,7 +3,7 @@
 
 HOST = "localhost"
 PORT = 4223
-UID = "XYZ" # Change to your UID
+UID = "XYZ" # Change XYZ to the UID of your OLED 128x64 Bricklet 2.0
 WIDTH = 128 # Columns
 HEIGHT = 64 # Rows
 
