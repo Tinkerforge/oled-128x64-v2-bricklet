@@ -11,13 +11,11 @@ void example_setup(TF_HalContext *hal) {
 	// Create device object
 	check(tf_oled_128x64_v2_create(&oled, UID, hal), "create device object");
 
-
 	// Clear display
 	check(tf_oled_128x64_v2_clear_display(&oled), "call clear_display");
 
 	// Write "Hello World" starting from upper left corner of the screen
 	check(tf_oled_128x64_v2_write_line(&oled, 0, 0, "Hello World"), "call write_line");
-
 }
 
 void example_loop(TF_HalContext *hal) {
